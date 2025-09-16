@@ -15,6 +15,7 @@ int main(void)
 	char command_path[MAX_COMMAND_LENGTH];
 	pid_t pid;
 	int status;
+	char *envp[] = {NULL};
 	while (1)
 	{
 		printf("simple_shell> ");
@@ -37,8 +38,10 @@ int main(void)
 		}
 		else if (pid == 0)
 		{
-			char *argv[] = {command_path, NULL};
-			char *envp[] = {NULL};
+			char *command_path_value = "";
+			char *argv[2];
+			argv[0] = command_path_value;
+			argv[1] = NULL;
 			if (execve(command_path, argv, envp) == -1)
 			{
 				perror("execve");
