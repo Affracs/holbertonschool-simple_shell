@@ -48,7 +48,7 @@ while (1)
 	if (line[0] == '\0')
 		continue;
 
-	execute_cmd(line);
+	execute_cmd(line, argv[0]);
 }
 free(line);
 return (0);
