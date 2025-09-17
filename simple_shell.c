@@ -85,7 +85,7 @@ void execute_cmd(char *cmd, char *prog_name)
 	{
 		if (execve(cmd, argv_exec, environ) == -1)
 		{
-			printf("%s: %s: command does not exist\n", prog_name, cmd);
+			printf("%s: %s: command does not exist\n", prog_name, argv_exec[0]);
 			_exit(1);
 		}
 	}
