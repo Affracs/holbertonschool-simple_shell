@@ -48,7 +48,7 @@ while (1)
 	if (line[0] == '\0')
 		continue;
 
-	execute_cmd(line, argv[0]);
+	execute_cmd(line);
 }
 free(line);
 return (0);
@@ -62,11 +62,18 @@ return (0);
 void execute_cmd(char *cmd, char *prog_name)
 {
 	pid_t pid;
-	char *argv_exec[2];
+	char *argv_exec[64];
 	int status;
+	int i = 0;
+	char *token;
 
-	argv_exec[0] = cmd;
-	argv_exec[1] = NULL;
+	token = strtok(cmd, "\t\n");
+	while (token != NULL && i < 63)
+	{
+		argv_exec[i++] = token;
+		token = strtok(NULL, "\t\n");
+	}
+	argv_exec[i] = NULL;
 
 	pid = fork();
 	if (pid < 0)
