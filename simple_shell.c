@@ -67,7 +67,7 @@ void execute_cmd(char *cmd, char *prog_name)
 	int i = 0;
 	char *token;
 
-	token = strtok(cmd, "\t\n");
+	token = strtok(cmd, " \t\n");
 	while (token != NULL && i < 63)
 	{
 		argv_exec[i++] = token;
