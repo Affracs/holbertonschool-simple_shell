@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -5,7 +7,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
-#include "shell.h"
+#include "main.h"
 
 
 /**
@@ -53,7 +55,7 @@ return (0);
 }
 
 /**
- * execute.cmd - executes the command written by the user
+ * execute_cmd - executes the command written by the user
  * @cmd: command to execute
  * @prog_name: program name
  */
