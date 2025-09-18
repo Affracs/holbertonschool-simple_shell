@@ -24,11 +24,7 @@ int main(int argc, char **argv)
 	size_t len = 0;
 	ssize_t nread;
 
-
-	(void) argc;
-	(void)argv;
-
-
+	(void)argc;
 while (1)
 {
 	if (interactive)
@@ -61,18 +57,21 @@ return (0);
 void execute_cmd(char *cmd, char *prog_name)
 {
 	pid_t pid;
-	char *argv_exec[64];
+	char *argv[64];
 	int status;
-	int i = 0;
+	int argc = 0;
 	char *token;
 
 	token = strtok(cmd, " ");
-	while (token != NULL && i < 63)
+	while (token != NULL && argc < 63)
 	{
-		argv_exec[i++] = token;
+		argv[argc] = token;
 		token = strtok(NULL, " ");
+		argc++;
 	}
-	argv_exec[i] = NULL;
+	argv[argc] = NULL;
+	if (argc == '\0')
+		return;
 
 	pid = fork();
 	if (pid < 0)
@@ -82,9 +81,9 @@ void execute_cmd(char *cmd, char *prog_name)
 	}
 	if (pid == 0)
 	{
-		if (execve(argv_exec[0], argv_exec, environ) == -1)
+		if (execve(argv[0], argv, environ) == -1)
 		{
-			printf("%s: %s: command does not exist\n", prog_name, argv_exec[0]);
+			printf("%s: %s: command does not exist\n", prog_name, argv[0]);
 			_exit(1);
 		}
 	}
