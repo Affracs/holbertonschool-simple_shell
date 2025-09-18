@@ -78,6 +78,19 @@ void execute_cmd(char *cmd, char *prog_name)
 		exit(0);
 	}
 
+	if (argc > 0 && strcmp(argv[0], "env") == 0)
+	{
+		int i = 0;
+
+		while (environ[i] != NULL)
+		{
+			printf("%s\n", environ[i]);
+			i++;
+		}
+		return;
+
+	}
+
 	if (access(argv[0], X_OK) != 0)
 	{
 		if (argv[0][0] != '/')
