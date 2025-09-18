@@ -29,7 +29,6 @@ while (1)
 	nread = getline(&line, &len, stdin);
 	if (nread == -1)
 	{
-		printf("\n");
 		free(line);
 		exit(0);
 	}
