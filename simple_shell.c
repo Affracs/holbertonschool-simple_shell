@@ -79,7 +79,7 @@ void execute_cmd(char *cmd, char *prog_name)
 
 	if (access(argv[0], X_OK) == 0)
 	{
-		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0];
+		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
 		return;
 	}
 	else
@@ -98,7 +98,6 @@ void execute_cmd(char *cmd, char *prog_name)
 				if (access(fullpath, X_OK) == 0)
 				{
 					argv[0] = strdup(fullpath);
-					found = 1;
 					break;
 				}
 				dir = strtok(NULL, ":");
