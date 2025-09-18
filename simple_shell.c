@@ -61,7 +61,6 @@ void execute_cmd(char *cmd, char *prog_name)
 	int status;
 	int argc = 0;
 	char *token;
-	char *path;
 	char *path_copy;
 	char *dir;
 	char fullpath[1024];
