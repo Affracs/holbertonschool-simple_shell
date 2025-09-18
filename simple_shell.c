@@ -65,10 +65,13 @@ void execute_cmd(char *cmd, char *prog_name)
 	token = strtok(cmd, " ");
 	while (token != NULL && argc < 63)
 	{
-		argv[argc++] = token;
+		argv[argc] = token;
 		token = strtok(NULL, " ");
+		argc++;
 	}
 	argv[argc] = NULL;
+	if (argc == '\0')
+		return;
 
 	pid = fork();
 	if (pid < 0)
