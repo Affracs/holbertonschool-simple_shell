@@ -25,10 +25,6 @@ int main(int argc, char **argv)
 	ssize_t nread;
 
 
-	(void) argc;
-	(void)argv;
-
-
 while (1)
 {
 	if (interactive)
