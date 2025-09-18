@@ -77,17 +77,13 @@ void execute_cmd(char *cmd, char *prog_name)
 	if (argc == '\0')
 		return;
 
-	if (access(argv[0], X_OK) == 0)
+	if (access(argv[0], X_OK) != 0)
 	{
-		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
-		return;
-	}
-	else
-	{
-		path = getenv("PATH");
-		if (path != NULL)
+		if (argv[0][0] != '/')
 		{
-			path_copy = strdup(path);
+			path_copy = strdup(getenv("PATH"));
+			if (path_copy != NULL)
+			{
 			dir = strtok(path_copy, ":");
 			while (dir != NULL)
 			{
@@ -105,7 +101,14 @@ void execute_cmd(char *cmd, char *prog_name)
 			free(path_copy);
 		}
 	}
+	
 
+	if (access(argv[0], X_OK) != 0)
+	{
+	fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
+	return;
+	}
+}
 
 	pid = fork();
 	if (pid < 0)
