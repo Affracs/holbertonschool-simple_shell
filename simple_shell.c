@@ -37,7 +37,6 @@ while (1)
 	nread = getline(&line, &len, stdin);
 	if (nread == -1)
 	{
-		printf("\n");
 		free(line);
 		exit(0);
 	}
@@ -67,11 +66,11 @@ void execute_cmd(char *cmd, char *prog_name)
 	int i = 0;
 	char *token;
 
-	token = strtok(cmd, " \t\n");
+	token = strtok(cmd, " ");
 	while (token != NULL && i < 63)
 	{
 		argv_exec[i++] = token;
-		token = strtok(NULL, "\t\n");
+		token = strtok(NULL, " ");
 	}
 	argv_exec[i] = NULL;
 
