@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 	size_t len = 0;
 	ssize_t nread;
 
-
+	(void)argc;
 while (1)
 {
 	if (interactive)
