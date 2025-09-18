@@ -61,6 +61,10 @@ void execute_cmd(char *cmd, char *prog_name)
 	int status;
 	int argc = 0;
 	char *token;
+	char *path;
+	char *path_copy;
+	char *dir;
+	char fullpath[1024];
 
 	token = strtok(cmd, " ");
 	while (token != NULL && argc < 63)
@@ -72,6 +76,36 @@ void execute_cmd(char *cmd, char *prog_name)
 	argv[argc] = NULL;
 	if (argc == '\0')
 		return;
+
+	if (access(argv[0], X_OK) == 0)
+	{
+		fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0];
+		return;
+	}
+	else
+	{
+		path = getenv("PATH");
+		if (path != NULL)
+		{
+			path_copy = strdup(path);
+			dir = strtok(path_copy, ":");
+			while (dir != NULL)
+			{
+				strcpy(fullpath, dir);
+				strcat(fullpath, "/");
+				strcat(fullpath, argv[0]);
+
+				if (access(fullpath, X_OK) == 0)
+				{
+					argv[0] = strdup(fullpath);
+					found = 1;
+					break;
+				}
+				dir = strtok(NULL, ":");
+			}
+			free(path_copy);
+	}
+
 
 	pid = fork();
 	if (pid < 0)
