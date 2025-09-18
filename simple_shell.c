@@ -103,6 +103,7 @@ void execute_cmd(char *cmd, char *prog_name)
 				dir = strtok(NULL, ":");
 			}
 			free(path_copy);
+		}
 	}
 
 
