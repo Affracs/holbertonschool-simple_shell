@@ -73,8 +73,10 @@ void execute_cmd(char *cmd, char *prog_name)
 		argc++;
 	}
 	argv[argc] = NULL;
-	if (argc == '\0')
-		return;
+	if (argc > 0 && strcmp(argv[0], "exit") == 0)
+	{
+		exit(0);
+	}
 
 	if (access(argv[0], X_OK) != 0)
 	{
