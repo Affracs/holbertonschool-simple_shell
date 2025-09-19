@@ -148,4 +148,7 @@ void execute_cmd(char *cmd, char *prog_name)
 	{
 		waitpid(pid, &status, 0);
 	}
-}
+
+	if (full_cmd != NULL)
+		free(full_cmd);
+	}
