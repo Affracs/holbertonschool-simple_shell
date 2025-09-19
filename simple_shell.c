@@ -89,66 +89,67 @@ void execute_cmd(char *cmd, char *prog_name)
 			i++;
 		}
 		return;
-
 	}
 
-	if (access(argv[0], X_OK) != 0)
+	if (access(argv[0], X_OK) != 0 && argv[0][0] != '/')
 	{
-		if (argv[0][0] != '/')
+		path_copy = strdup(getenv("PATH"));
+		if (path_copy != NULL)
 		{
-			path_copy = strdup(getenv("PATH"));
-			if (path_copy != NULL)
-			{
-			dir = strtok(path_copy, ":");
-			while (dir != NULL)
-			{
-				fullpath[0] = '\0';
-				if (strlen(dir) + 1 + strlen(argv[0]) + 1 < sizeof(fullpath))
-				{
-				strcpy(fullpath, dir);
-				strcat(fullpath, "/");
-				strcat(fullpath, argv[0]);
+            dir = strtok(path_copy, ":");
+            while (dir != NULL)
+            {
+                fullpath[0] = '\0';
+                if (strlen(dir) + 1 + strlen(argv[0]) + 1 < sizeof(fullpath))
+                {
+                    strcpy(fullpath, dir);
+                    strcat(fullpath, "/");
+                    strcat(fullpath, argv[0]);
 
-				if (access(fullpath, X_OK) == 0)
-				{
-					full_cmd = strdup(fullpath);;
-					break;
-				}
-				dir = strtok(NULL, ":");
-			}
-			free(path_copy);
-		}
-	}
-	}
+                    if (access(fullpath, X_OK) == 0)
+                    {
+                        full_cmd = strdup(fullpath);
+                        break;
+                    }
+                }
+                dir = strtok(NULL, ":");
+            }
+            free(path_copy);
+        }
 
-		if (full_cmd != NULL)
-			argv[0] = full_cmd;
+        if (full_cmd != NULL)
+            argv[0] = full_cmd;
+    }
 
-	if (access(argv[0], X_OK) != 0)
-	{
-	fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
-	return;
-	}
+    if (access(argv[0], X_OK) != 0)
+    {
+        fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
+        if (full_cmd != NULL)
+            free(full_cmd);
+        return;
+    }
 
-	pid = fork();
-	if (pid < 0)
-	{
-		printf("Error: fork failed\n");
-		return;
-	}
-	if (pid == 0)
-	{
-		if (execve(argv[0], argv, environ) == -1)
-		{
-			printf("%s: %s: command does not exist\n", prog_name, argv[0]);
-			_exit(1);
-		}
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-	}
+    pid = fork();
+    if (pid < 0)
+    {
+        printf("Error: fork failed\n");
+        if (full_cmd != NULL)
+            free(full_cmd);
+        return;
+    }
 
-	if (full_cmd != NULL)
-		free(full_cmd);
-	}
+    if (pid == 0)
+    {
+        if (execve(argv[0], argv, environ) == -1)
+        {
+            printf("%s: %s: command does not exist\n", prog_name, argv[0]);
+            _exit(1);
+        }
+    }
+    else
+    {
+        waitpid(pid, &status, 0);
+    }
+
+    if (full_cmd != NULL)
+        free(full_cmd);
