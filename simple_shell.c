@@ -149,5 +149,5 @@ void	execute_cmd(char *cmd, char *prog_name)
 
 	if (full_cmd != NULL)
 		free(full_cmd);
-} /* closing brace for execute_cmd */
+}
 
