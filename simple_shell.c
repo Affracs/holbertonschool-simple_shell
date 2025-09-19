@@ -64,6 +64,7 @@ void execute_cmd(char *cmd, char *prog_name)
 	char *path_copy;
 	char *dir;
 	char fullpath[1024];
+	char *full_cmd = NULL;
 
 	token = strtok(cmd, " ");
 	while (token != NULL && argc < 63)
@@ -110,7 +111,7 @@ void execute_cmd(char *cmd, char *prog_name)
 
 				if (access(fullpath, X_OK) == 0)
 				{
-					argv[0] = strdup(fullpath);
+					full_cmd = strdup(fullpath);;
 					break;
 				}
 				dir = strtok(NULL, ":");
@@ -119,8 +120,9 @@ void execute_cmd(char *cmd, char *prog_name)
 		}
 	}
 	}
-}
-	
+
+		if (full_cmd != NULL)
+			argv[0] = full_cmd;
 
 	if (access(argv[0], X_OK) != 0)
 	{
