@@ -61,6 +61,9 @@ void execute_cmd(char *cmd, char *prog_name)
 	int status;
 	int argc = 0;
 	char *token;
+	char *path_copy;
+	char *dir;
+	char fullpath[1024];
 
 	token = strtok(cmd, " ");
 	while (token != NULL && argc < 63)
@@ -70,8 +73,56 @@ void execute_cmd(char *cmd, char *prog_name)
 		argc++;
 	}
 	argv[argc] = NULL;
-	if (argc == '\0')
+	if (argc > 0 && strcmp(argv[0], "exit") == 0)
+	{
+		exit(0);
+	}
+
+	if (argc > 0 && strcmp(argv[0], "env") == 0)
+	{
+		int i = 0;
+
+		while (environ[i] != NULL)
+		{
+			printf("%s\n", environ[i]);
+			i++;
+		}
 		return;
+
+	}
+
+	if (access(argv[0], X_OK) != 0)
+	{
+		if (argv[0][0] != '/')
+		{
+			path_copy = strdup(getenv("PATH"));
+			if (path_copy != NULL)
+			{
+			dir = strtok(path_copy, ":");
+			while (dir != NULL)
+			{
+				strcpy(fullpath, dir);
+				strcat(fullpath, "/");
+				strcat(fullpath, argv[0]);
+
+				if (access(fullpath, X_OK) == 0)
+				{
+					argv[0] = strdup(fullpath);
+					break;
+				}
+				dir = strtok(NULL, ":");
+			}
+			free(path_copy);
+		}
+	}
+	
+
+	if (access(argv[0], X_OK) != 0)
+	{
+	fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
+	return;
+	}
+}
 
 	pid = fork();
 	if (pid < 0)
