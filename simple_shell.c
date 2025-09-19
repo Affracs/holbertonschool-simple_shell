@@ -101,6 +101,9 @@ void execute_cmd(char *cmd, char *prog_name)
 			dir = strtok(path_copy, ":");
 			while (dir != NULL)
 			{
+				fullpath[0] = '\0';
+				if (strlen(dir) + 1 + strlen(argv[0]) + 1 < sizeof(fullpath))
+				{
 				strcpy(fullpath, dir);
 				strcat(fullpath, "/");
 				strcat(fullpath, argv[0]);
@@ -115,6 +118,8 @@ void execute_cmd(char *cmd, char *prog_name)
 			free(path_copy);
 		}
 	}
+	}
+}
 	
 
 	if (access(argv[0], X_OK) != 0)
@@ -122,7 +127,6 @@ void execute_cmd(char *cmd, char *prog_name)
 	fprintf(stderr, "%s: 1: %s: not found\n", prog_name, argv[0]);
 	return;
 	}
-}
 
 	pid = fork();
 	if (pid < 0)
