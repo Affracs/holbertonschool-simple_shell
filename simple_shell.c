@@ -108,6 +108,12 @@ void	execute_cmd(char *cmd, char *prog_name)
 
 	if (access(argv[0], X_OK) != 0 && argv[0][0] != '/')
 	{
+		char *path_value = find_path();
+
+		if (path_value != NULL)
+			path_copy = strdup(path_value);
+		else
+			path_copy = NULL;
 
 		if (path_copy != NULL)
 		{
