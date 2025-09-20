@@ -47,14 +47,18 @@ int	main(int argc, char **argv)
 	free(line);
 	return (0);
 }
-
-char	*find_path(void)
+/**
+ * find_path - return path from environ
+ *
+ * Return: path to value or NULL if not found
+ */
+char *find_path(void)
 {
 	int i = 0;
 
 	while (environ[i])
 	{
-		if (strcmp(environ[i], "PATH=", 5) == 0)
+		if (strncmp(environ[i], "PATH=", 5) == 0)
 			return (environ[i] + 5);
 		i++;
 	}
