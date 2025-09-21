@@ -14,5 +14,6 @@ extern char **environ;
 
 void execute_cmd(char *cmd, char *prog_name);
 void trim_newline(char *line);
+char *find_path(void);
 
 #endif

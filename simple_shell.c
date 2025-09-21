@@ -47,6 +47,23 @@ int	main(int argc, char **argv)
 	free(line);
 	return (0);
 }
+/**
+ * find_path - return path from environ
+ *
+ * Return: path to value or NULL if not found
+ */
+char *find_path(void)
+{
+	int i = 0;
+
+	while (environ[i])
+	{
+		if (strncmp(environ[i], "PATH=", 5) == 0)
+			return (environ[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
 
 /**
  * execute_cmd - executes the command written by the user
@@ -91,7 +108,13 @@ void	execute_cmd(char *cmd, char *prog_name)
 
 	if (access(argv[0], X_OK) != 0 && argv[0][0] != '/')
 	{
-		path_copy = strdup(getenv("PATH"));
+		char *path_value = find_path();
+
+		if (path_value != NULL)
+			path_copy = strdup(path_value);
+		else
+			path_copy = NULL;
+
 		if (path_copy != NULL)
 		{
 			dir = strtok(path_copy, ":");
